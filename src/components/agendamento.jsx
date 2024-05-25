@@ -2,17 +2,17 @@ import { useForm } from "react-hook-form";
 import { api } from "../config_axios";
 import { useState } from "react";
 
-const Cadastrar_tarefa = () => {
+const Agendamento = () => {
   const { register, handleSubmit, reset } = useForm();
   const [aviso, setAviso] = useState("");
 
   const salvar = async (campos) => {
     try {
-      const response = await api.post("tarefas", campos);
-      setAviso(`Tarefa cadastrada com sucesso!"`);
+      const response = await api.post("agendamento", campos);
+      setAviso(`Agendamento cadastrado com sucesso!"`);
       reset();
     } catch (error) {
-      setAviso("Erro ao cadastrar tarefa!");
+      setAviso("Erro ao cadastrar agendamento!");
     }
   };
 
@@ -73,4 +73,4 @@ const Cadastrar_tarefa = () => {
             );
 };
 
-            export default Cadastrar_tarefa;
+            export default Agendamento;

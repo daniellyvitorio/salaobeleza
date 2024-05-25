@@ -1,6 +1,6 @@
-import Cadastrar_Tarefas from './components/cadastrar_tarefa';
+import Agendamento from './components/agendamento';
 import Menu_Superior from './components/MenuSuperior';
-import Manutencao_Tarefas from './components/manutencao_tarefas';
+import Manutencao_Agendamento from './components/manutencao_agendamento';
 import FormularioLogin from './components/login';
 import Cadastrar_Usuarios from './components/cadastrar_usuario';
 import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
@@ -27,11 +27,11 @@ const RoutesWithAuth = () => {
       {autenticado && <Menu_Superior />}
       <Routes>
         <Route path="/login" element={<FormularioLogin />} />
-        <Route path="/" element={autenticado ? (<Cadastrar_Tarefas /> // Use replace to prevent history stack issues
+        <Route path="/" element={autenticado ? (<Agendamento /> // Use replace to prevent history stack issues
             ) : <FormularioLogin />}
         />
-        <Route path="/tarefas" element={<ProtectedRoute><Cadastrar_Tarefas /></ProtectedRoute>} />
-        <Route path="/manutencao" element={<ProtectedRoute><Manutencao_Tarefas /></ProtectedRoute>} />
+        <Route path="/agendamento" element={<ProtectedRoute><Agendamento /></ProtectedRoute>} />
+        <Route path="/manutencao" element={<ProtectedRoute><Manutencao_Agendamento /></ProtectedRoute>} />
         <Route path="/user" element={<ProtectedRoute><Cadastrar_Usuarios /></ProtectedRoute>} />
       </Routes>
     </Router>

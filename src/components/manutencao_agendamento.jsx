@@ -2,16 +2,17 @@ import {useForm} from "react-hook-form";
 import { useState, useEffect } from "react";
 import { api } from "../config_axios";
 import ItemLista from "./ItemLista";  
+import Agendamento from "./agendamento";
 
-const ManutencaoTarefas = () => {
+const ManutencaoAgendamento = () => {
     //servem para manipular os dados do formulário
     const {register, handleSubmit, reset} = useForm();
     //guardar e setar as informações do objeto
-    const [tarefas, setTarefas] = useState([]);
+    const [agendamento, setAgendamento] = useState([]);
 
     const obterLista = async () => {
         try{
-            const lista = await api.get("tarefas");
+            const lista = await api.get("agendamento");
             setTarefas(lista.data);
         }catch(error){
             alert(`Erro: ..Não foi possível obter os dados: ${error}`);
@@ -27,50 +28,50 @@ useEffect(() => {
 
 const filtrarLista = async (campos) => {
     try{
-        const lista = await api.get(`tarefas/filtro/${campos.palavra}`);
+        const lista = await api.get(`agendamentos/filtro/${campos.palavra}`);
         lista.data.length
         ? setTarefas(lista.data)
-        : alert("Não há tarefas cadastradas com a palavra chave pesquisada");
+        : alert("Não há agendamentos cadastrados com a palavra chave pesquisada");
     }catch(error){
         alert(`Erro: ..Não foi possível obter os dados: ${error}`);
     }
 }
 
 const excluir = async(id,titulo) => {
-    if(!window.confirm(`Confirma a exclusão do Tarefa ${titulo}?`)){
+    if(!window.confirm(`Confirma a exclusão do Agendamento ${titulo}?`)){
         return;
     }
     try{
         console.log("id é:"+id)
-        await api.delete(`tarefas/${id}`);
+        await api.delete(`agendamento/${id}`);
         //formar uma nova lista de tarefas sem a tarefa que foi excluida
-        setTarefas(tarefas.filter(Tarefas => tarefas.id !== id));
+        setAgendamento(agendamento.filter(Agendamento => agendamento.id !== id));
         location.reload();
     }catch(error){
-        alert(`Erro: ..Não foi possível excluir a tarefa ${titulo}: ${error}`);
+        alert(`Erro: ..Não foi possível excluir o agendamento ${titulo}: ${error}`);
     }
 }
 
 //alterar os registros
 const alterar = async (id,titulo,index) => {
-    const novoStatus = prompt(`Digite o novo status da tarefa ${titulo}`);
+    const novoStatus = prompt(`Digite o novo status do agendamento ${titulo}`);
     if (novoStatus == "" ) {
         alert('Digite um status válido!(status em branco)')
         return;
     }
     try{//captura os erros 
         //chamando o backend e passando os dados
-        await api.put(`tarefas/${id}`,{status: novoStatus});
+        await api.put(`agendamento/${id}`,{status: novoStatus});
         
-        const TarefasAtualizadas = [...tarefas];
-        const indiceTarefas = TarefasAtualizadas.find(Tarefas => Tarefas.id === id);
-        console.log("indice tarefa:"+indiceTarefas);
-        TarefasAtualizadas[indiceTarefas.id].status = novoStatus;
-        setTarefas(TarefasAtualizadas);
+        const AgendamentosAtualizados = [...agendamentos];
+        const indiceAgendamento = AgendamentosAtualizados.find(Agendamento => Agendamento.id === id);
+        console.log("indice agendamento:"+indiceAgendamento);
+       AgendamentosAtualizados[indiceAgendamento.id].status = novoStatus;
+        setAgendamento(AgendamentosAtualizados);
         obterLista();
         location.reload();
     }catch(error){
-        alert(`Erro: ..Não foi possível alterar a tarefa ${titulo}: ${error}`);
+        alert(`Erro: ..Não foi possível alterar o agendamento ${titulo}: ${error}`);
     }
 }
 
@@ -78,7 +79,7 @@ const alterar = async (id,titulo,index) => {
        <div className="container">
         <div className="row">
             <div className="col-sm-7">
-                <h4 className="fst-italic mt-3">Manutenção de Tarefas</h4>
+                <h4 className="fst-italic mt-3">Manutenção de Agendamento</h4>
             </div>
             <div className="col-sm-5">
                 <form onSubmit={handleSubmit(filtrarLista)}>
@@ -95,12 +96,9 @@ const alterar = async (id,titulo,index) => {
             <thead>
                 <tr>
                     <th>Cód.</th>
-                    <th>Titulo</th>
+                    <th>Serviço</th>
                     <th>Descrição</th>
-                    <th>Status</th>
-                    <th>Data Criação</th>
-                    <th>Data Limite</th>
-                    <th>Ações</th>
+                    <th>Data de Agendamento</th>
                 </tr>
             </thead>
             <tbody>
@@ -124,4 +122,4 @@ const alterar = async (id,titulo,index) => {
     );
 };
 
-export default ManutencaoTarefas;
+export default ManutencaoAgendamento;
