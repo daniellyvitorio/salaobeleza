@@ -43,7 +43,7 @@ const Cadastrar_Usuario = () => {
             />
           </div>
           <div className="form-group mt-2">
-            <label htmlFor="status">Senha:</label>
+            <label htmlFor="password">Senha:</label>
             <input
               type="password"
               className="form-control"
@@ -51,8 +51,7 @@ const Cadastrar_Usuario = () => {
               required
               {...register("senha")}
             />
-          </div>
-                   
+          </div>   
           <input
             type="submit"
             className="btn btn-primary mt-3"

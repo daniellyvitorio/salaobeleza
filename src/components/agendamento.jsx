@@ -4,15 +4,15 @@ import { useState } from "react";
 
 const Agendamento = () => {
   const { register, handleSubmit, reset } = useForm();
-  const [aviso, setAviso] = useState("");
+  const [agendamento, setagendamento] = useState("");
 
   const salvar = async (campos) => {
     try {
-      const response = await api.post("agendamento", campos);
-      setAviso(`Agendamento cadastrado com sucesso!"`);
+      const response = await api.post("/agendamento/createAgendamento", campos);
+      setagendamento(`Agendamento cadastrado com sucesso!"`);
       reset();
     } catch (error) {
-      setAviso("Erro ao cadastrar agendamento!");
+      setagendamento("Erro ao cadastrar agendamento!");
     }
   };
 
@@ -67,7 +67,7 @@ const Agendamento = () => {
                       value="Limpar"
                     />
                   </form>
-                  <div className="alert mt-3">{aviso}</div>
+                  <div className="alert mt-3">{agendamento}</div>
               </div>
             </div>
             );

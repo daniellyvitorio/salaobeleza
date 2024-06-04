@@ -1,19 +1,18 @@
 import {useForm} from "react-hook-form";
 import { useState, useEffect } from "react";
 import { api } from "../config_axios";
-import ItemLista from "./ItemLista";  
-import Agendamento from "./agendamento";
+import ItemLista from "./ItemLista";
 
 const ManutencaoAgendamento = () => {
     //servem para manipular os dados do formulário
     const {register, handleSubmit, reset} = useForm();
     //guardar e setar as informações do objeto
-    const [agendamento, setAgendamento] = useState([]);
+    const [manutencaoAgendamento, setManutencaoAgendamento] = useState([]);
 
     const obterLista = async () => {
         try{
-            const lista = await api.get("agendamento");
-            setTarefas(lista.data);
+            const lista = await api.get("manutencaoAgendamento");
+            setManutencaoAgendamento(lista.data);
         }catch(error){
             alert(`Erro: ..Não foi possível obter os dados: ${error}`);
         }
@@ -28,9 +27,9 @@ useEffect(() => {
 
 const filtrarLista = async (campos) => {
     try{
-        const lista = await api.get(`agendamentos/filtro/${campos.palavra}`);
+        const lista = await api.get(`manutencaoAgendamento/filtro/${campos.palavra}`);
         lista.data.length
-        ? setTarefas(lista.data)
+        ? setManutencaoAgendamento(lista.data)
         : alert("Não há agendamentos cadastrados com a palavra chave pesquisada");
     }catch(error){
         alert(`Erro: ..Não foi possível obter os dados: ${error}`);
@@ -43,9 +42,9 @@ const excluir = async(id,titulo) => {
     }
     try{
         console.log("id é:"+id)
-        await api.delete(`agendamento/${id}`);
-        //formar uma nova lista de tarefas sem a tarefa que foi excluida
-        setAgendamento(agendamento.filter(Agendamento => agendamento.id !== id));
+        await api.delete(`manutencaoAgendamento/${id}`);
+        //formar uma nova lista de manutencaoAgendamento sem a manutencaoAgendamento que foi excluida
+        setManutencaoAgendamento(manutencaoAgendamento.filter(ManutencaoAgendamento => manutencaoAgendamento.id !== id));
         location.reload();
     }catch(error){
         alert(`Erro: ..Não foi possível excluir o agendamento ${titulo}: ${error}`);
@@ -61,13 +60,13 @@ const alterar = async (id,titulo,index) => {
     }
     try{//captura os erros 
         //chamando o backend e passando os dados
-        await api.put(`agendamento/${id}`,{status: novoStatus});
+        await api.put(`manutencaoAgendamento/${id}`,{status: novoStatus});
         
-        const AgendamentosAtualizados = [...agendamentos];
-        const indiceAgendamento = AgendamentosAtualizados.find(Agendamento => Agendamento.id === id);
-        console.log("indice agendamento:"+indiceAgendamento);
-       AgendamentosAtualizados[indiceAgendamento.id].status = novoStatus;
-        setAgendamento(AgendamentosAtualizados);
+        const manutencaoAgendamentoAtualizados = [...manutencaoAgendamento];
+        const indiceManutencaoAgendamento = manutencaoAgendamentoAtualizados.find(ManutencaoAgendamento => ManutencaoAgendamento.id === id);
+        console.log("indice manutencaoAgendamento:"+indicemanutencaoAgendamento);
+        ManutencaoAgendamentoAtualizados[indiceManutencaoAgendamento.id].status = novoStatus;
+        setManutencaoAgendamento(ManutencaoAgendamentoAtualizados);
         obterLista();
         location.reload();
     }catch(error){
@@ -102,17 +101,17 @@ const alterar = async (id,titulo,index) => {
                 </tr>
             </thead>
             <tbody>
-                {tarefas.map((tarefa) => (
+                {manutencaoAgendamento.map((manutencaoAgendamento) => (
                     <ItemLista
-                        key={tarefa.id}
-                        id={tarefa.id}
-                        titulo={tarefa.titulo}
-                        descricao={tarefa.descricao}
-                        status={tarefa.status}
-                        data_criacao={tarefa.data_criacao}
-                        data_limite={tarefa.data_limite}
-                        excluirClick={()=>excluir(tarefa.id,tarefa.titulo)}
-                        alterarClick={()=>alterar(tarefa.id,tarefa.titulo)}
+                        key={manutencaoAgendamento.id}
+                        id={manutencaoAgendamento.id}
+                        titulo={manutencaoAgendamento.titulo}
+                        descricao={manutencaoAgendamento.descricao}
+                        status={manutencaoAgendamento.status}
+                        data_criacao={manutencaoAgendamento.data_criacao}
+                        data_limite={manutencaoAgendamento.data_limite}
+                        excluirClick={()=>excluir(manutencaoAgendamento.id,manutencaoAgendamento.titulo)}
+                        alterarClick={()=>alterar(manutencaoAgendamento.id,manutencaoAgendamento.titulo)}
                     />
                 ))}
             </tbody>
