@@ -5,7 +5,7 @@ const ItemLista = ({
     id,
     servico,
     descricao,
-    data_de_agendamento,
+    data_agendamento,
     excluirClick,
     alterarClick}) => {
     return (
@@ -13,7 +13,7 @@ const ItemLista = ({
             <td>{id}</td>
             <td>{servico}</td>
             <td>{descricao}</td>
-            <td>{data_de_agendamento}</td>
+            <td>{data_agendamento}</td>
             <td class="text-center">
                 <i className="exclui text-danger fw-bold" title="Excluir" onClick={excluirClick}>&#10008;</i>
                 <i className="altera text-sucess fw-bold ms-2" title="Alterar" onClick={alterarClick}>&#36;</i>

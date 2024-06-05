@@ -11,7 +11,7 @@ const ManutencaoAgendamento = () => {
 
     const obterLista = async () => {
         try{
-            const lista = await api.get("manutencaoAgendamento");
+            const lista = await api.get("/agendamento/all");
             setManutencaoAgendamento(lista.data);
         }catch(error){
             alert(`Erro: ..Não foi possível obter os dados: ${error}`);
@@ -36,41 +36,41 @@ const filtrarLista = async (campos) => {
     }
 }
 
-const excluir = async(id,titulo) => {
-    if(!window.confirm(`Confirma a exclusão do Agendamento ${titulo}?`)){
+const excluir = async(id,servico) => {
+    if(!window.confirm(`Confirma a exclusão do Agendamento ${servico}?`)){
         return;
     }
     try{
         console.log("id é:"+id)
-        await api.delete(`manutencaoAgendamento/${id}`);
+        await api.delete(`/agendamento/deleteAgendamento/${id}`);
         //formar uma nova lista de manutencaoAgendamento sem a manutencaoAgendamento que foi excluida
         setManutencaoAgendamento(manutencaoAgendamento.filter(ManutencaoAgendamento => manutencaoAgendamento.id !== id));
         location.reload();
     }catch(error){
-        alert(`Erro: ..Não foi possível excluir o agendamento ${titulo}: ${error}`);
+        alert(`Erro: ..Não foi possível excluir o agendamento ${servico}: ${error}`);
     }
 }
 
 //alterar os registros
-const alterar = async (id,titulo,index) => {
-    const novoStatus = prompt(`Digite o novo status do agendamento ${titulo}`);
-    if (novoStatus == "" ) {
-        alert('Digite um status válido!(status em branco)')
+const alterar = async (id,servico,index) => {
+    const novoservico = prompt(`Digite o novo servico do agendamento ${servico}`);
+    if (novoservico == "" ) {
+        alert('Digite um servico válido!(servico em branco)')
         return;
     }
     try{//captura os erros 
         //chamando o backend e passando os dados
-        await api.put(`manutencaoAgendamento/${id}`,{status: novoStatus});
+        await api.put(`/agendamento/updateAgendamento/${id}`,{servico: novoservico});
         
         const manutencaoAgendamentoAtualizados = [...manutencaoAgendamento];
         const indiceManutencaoAgendamento = manutencaoAgendamentoAtualizados.find(ManutencaoAgendamento => ManutencaoAgendamento.id === id);
-        console.log("indice manutencaoAgendamento:"+indicemanutencaoAgendamento);
-        ManutencaoAgendamentoAtualizados[indiceManutencaoAgendamento.id].status = novoStatus;
-        setManutencaoAgendamento(ManutencaoAgendamentoAtualizados);
+        console.log("indice manutencaoAgendamento:"+indiceManutencaoAgendamento);
+        manutencaoAgendamentoAtualizados[indiceManutencaoAgendamento.id].servico = novoservico;
+        setManutencaoAgendamento(manutencaoAgendamentoAtualizados);
         obterLista();
         location.reload();
     }catch(error){
-        alert(`Erro: ..Não foi possível alterar o agendamento ${titulo}: ${error}`);
+        alert(`Erro: ..Não foi possível alterar o agendamento ${servico}: ${error}`);
     }
 }
 
@@ -83,7 +83,7 @@ const alterar = async (id,titulo,index) => {
             <div className="col-sm-5">
                 <form onSubmit={handleSubmit(filtrarLista)}>
                     <div className="input-group mt-3">
-                        <input type="text" className="form-control" placeholder="Titulo" required {...register("palavra")} />
+                        <input type="text" className="form-control" placeholder="servico" required {...register("palavra")} />
                         <input type="submit" className="btn btn-primary" value="Pesquisar" />
                         <input type="button" className="btn btn-danger" value="Todos" onClick={()=>{reset({palavra:""});obterLista();}}/>
                     </div>
@@ -105,18 +105,15 @@ const alterar = async (id,titulo,index) => {
                     <ItemLista
                         key={manutencaoAgendamento.id}
                         id={manutencaoAgendamento.id}
-                        titulo={manutencaoAgendamento.titulo}
+                        servico={manutencaoAgendamento.servico}
                         descricao={manutencaoAgendamento.descricao}
-                        status={manutencaoAgendamento.status}
-                        data_criacao={manutencaoAgendamento.data_criacao}
-                        data_limite={manutencaoAgendamento.data_limite}
-                        excluirClick={()=>excluir(manutencaoAgendamento.id,manutencaoAgendamento.titulo)}
-                        alterarClick={()=>alterar(manutencaoAgendamento.id,manutencaoAgendamento.titulo)}
+                        data_agendamento={manutencaoAgendamento.data_agendamento}
+                        excluirClick={()=>excluir(manutencaoAgendamento.id,manutencaoAgendamento.servico)}
+                        alterarClick={()=>alterar(manutencaoAgendamento.id,manutencaoAgendamento.servico)}
                     />
                 ))}
             </tbody>
         </table>
-
        </div> 
     );
 };
